@@ -79,7 +79,7 @@ export function ReviewPage() {
             <SectionEyebrow>Tomorrow</SectionEyebrow>
             <h2 className="mt-3 text-3xl font-semibold text-[var(--ethereal-ink)]">Ready for tomorrow?</h2>
             <p className="mt-2 text-base text-[var(--ethereal-muted)]">
-              Ethereal has drafted your morning schedule based on today&apos;s peaks.
+              TaskPilot has drafted your morning schedule based on today&apos;s peaks.
             </p>
           </div>
 

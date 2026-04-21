@@ -13,7 +13,7 @@ export function SetupPage() {
       <div className="mx-auto max-w-[1400px]">
         <header className="glass-panel mb-6 flex items-center justify-between rounded-[2rem] px-5 py-4 sm:px-8">
           <span className="font-display text-2xl font-semibold tracking-tight text-[var(--ethereal-primary)]">
-            Ethereal
+            TaskPilot
           </span>
           <nav className="hidden gap-6 text-sm font-medium text-[var(--ethereal-muted)] sm:flex">
             <span className="text-[var(--ethereal-primary)]">Setup</span>

@@ -20,7 +20,7 @@ const cards = [
   },
   {
     category: 'System',
-    description: 'All 14 connected devices are now synchronized with your Ethereal Neural Core.',
+    description: 'All 14 connected devices are now synchronized with your TaskPilot Neural Core.',
     title: 'Cloud Sync Complete',
   },
 ];

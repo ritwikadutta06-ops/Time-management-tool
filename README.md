@@ -1,6 +1,6 @@
-# Ethereal Focus AI
+# TaskPilot
 
-Ethereal Focus AI is a Stitch-inspired time management web app built with React, Vite, Tailwind CSS, and Supabase-ready configuration.
+TaskPilot is a Stitch-inspired time management web app built with React, Vite, Tailwind CSS, and Supabase-ready configuration.
 
 ## Features
 
@@ -49,3 +49,15 @@ Set these environment variables in Vercel:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
+
+## TaskPilot Task Sync (Supabase)
+
+TaskPilot tasks now support cloud sync with automatic local fallback.
+
+1. Keep `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` set.
+2. In Supabase SQL Editor, run:
+   - `supabase/schema.sql`
+   - `supabase/policies.sql`
+   - `supabase/taskpilot_tasks.sql`
+
+If Supabase is unreachable or not configured, TaskPilot continues in local mode automatically.

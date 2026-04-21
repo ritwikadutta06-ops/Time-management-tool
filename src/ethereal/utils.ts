@@ -34,7 +34,7 @@ export function deriveIntentSuggestion(title: string, peakWindow: string) {
       priority: 'High Impact',
       project: 'Focused Execution',
       summary:
-        'Describe the next meaningful task and Ethereal will shape it into a realistic focus block.',
+        'Describe the next meaningful task and TaskPilot will shape it into a realistic focus block.',
     };
   }
 
@@ -66,6 +66,6 @@ export function deriveIntentSuggestion(title: string, peakWindow: string) {
     priority: 'Focused',
     project: 'Adaptive Execution',
     summary:
-      'Ethereal recommends anchoring this task inside a single calm block with minimal context switching.',
+      'TaskPilot recommends anchoring this task inside a single calm block with minimal context switching.',
   };
 }

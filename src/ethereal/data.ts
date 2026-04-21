@@ -1,4 +1,13 @@
-import type { AdaptiveProposal, AlertSettings, FlowBlock, PendingTask, ProfileState, SetupState, SmartIntent } from './types';
+import type {
+  AdaptiveProposal,
+  AlertSettings,
+  FlowBlock,
+  PendingTask,
+  ProfileState,
+  SetupState,
+  SmartIntent,
+  TaskItem,
+} from './types';
 
 export const occupationOptions = [
   'Software Engineer',
@@ -102,6 +111,27 @@ export const pendingTasks: PendingTask[] = [
   },
 ];
 
+export const initialTasks: TaskItem[] = [
+  {
+    addToCalendar: true,
+    createdAt: new Date().toISOString(),
+    dueAt: new Date(new Date().setHours(17, 0, 0, 0)).toISOString(),
+    id: 'brand-identity',
+    priority: 'high',
+    status: 'todo',
+    title: 'Brand Identity Workshop',
+  },
+  {
+    addToCalendar: true,
+    createdAt: new Date().toISOString(),
+    dueAt: new Date(new Date().setHours(16, 30, 0, 0)).toISOString(),
+    id: 'architecture-doc',
+    priority: 'medium',
+    status: 'todo',
+    title: 'Design System Architecture',
+  },
+];
+
 export const initialIntents: SmartIntent[] = [
   {
     collaborators: ['AV', 'MK', 'SR'],
@@ -110,7 +140,7 @@ export const initialIntents: SmartIntent[] = [
     energyWindow: '10AM - 12PM',
     id: 'brand-identity',
     priority: 'High Impact',
-    project: 'Ethereal Design',
+    project: 'TaskPilot Design',
     summary: 'Based on your past workshops, this typically requires deep preparation and follow-up docs.',
     tags: ['#DeepWork', '#ClientFacing'],
     title: 'Brand Identity Workshop',

@@ -188,7 +188,7 @@ export function ProfilePage() {
       <SurfaceCard className="px-6 py-6">
         <SectionEyebrow>Privacy &amp; AI learning</SectionEyebrow>
         <p className="mt-4 max-w-3xl text-base leading-8 text-[var(--ethereal-muted)]">
-          Control how Ethereal processes your behavioral data. Your sanctuary remains yours; we only learn
+          Control how TaskPilot processes your behavioral data. Your sanctuary remains yours; we only learn
           to serve you better, never to share your patterns.
         </p>
 

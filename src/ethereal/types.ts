@@ -48,6 +48,19 @@ export interface PendingTask {
   title: string;
 }
 
+export type TaskPriority = 'low' | 'medium' | 'high';
+export type TaskStatus = 'todo' | 'done';
+
+export interface TaskItem {
+  addToCalendar: boolean;
+  createdAt: string;
+  dueAt: string | null;
+  id: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+  title: string;
+}
+
 export interface SmartIntent {
   collaborators: string[];
   deadline: string;

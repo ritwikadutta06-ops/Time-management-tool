@@ -10,7 +10,7 @@ import {
   Sparkles,
   UserCircle2,
 } from 'lucide-react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { PrimaryButton } from './primitives';
 import { useSanctuary } from './context';
 import { cn } from './utils';
@@ -50,6 +50,7 @@ function useActiveSection() {
 
 export function MainShell() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { focusScore, peakEnergyLabel } = useSanctuary();
   const activeSection = useActiveSection();
 
@@ -60,7 +61,7 @@ export function MainShell() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-8">
               <span className="font-display text-2xl font-semibold tracking-tight text-[var(--ethereal-primary)]">
-                Ethereal
+                TaskPilot
               </span>
               <nav className="hidden gap-2 lg:flex">
                 {topLinks.map((link) => (
@@ -142,7 +143,11 @@ export function MainShell() {
               })}
             </nav>
 
-            <PrimaryButton className="mt-8 w-full justify-center" onClick={() => void 0} type="button">
+            <PrimaryButton
+              className="mt-8 w-full justify-center"
+              onClick={() => navigate('/tasks', { state: { smartAdd: true } })}
+              type="button"
+            >
               <Sparkles className="h-4 w-4" />
               Smart Add Task
             </PrimaryButton>

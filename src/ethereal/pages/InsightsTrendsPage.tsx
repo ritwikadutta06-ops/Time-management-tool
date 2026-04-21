@@ -88,7 +88,7 @@ export function InsightsTrendsPage() {
             Back-to-back meetings are reducing your deep work by 30%
           </h2>
           <p className="mt-4 max-w-xl text-base leading-8 text-white/78">
-            Ethereal suggests blocking 15 minutes of &quot;Buffer Time&quot; between your Tuesday afternoon
+            TaskPilot suggests blocking 15 minutes of &quot;Buffer Time&quot; between your Tuesday afternoon
             syncs to prevent cognitive fatigue.
           </p>
           <PrimaryButton
