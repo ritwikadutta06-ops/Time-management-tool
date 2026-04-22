@@ -18,146 +18,15 @@ export const occupationOptions = [
 
 export const quickTags = ['#DeepWork', '#Internal', '#ClientFacing', '#Documentation'];
 
-export const flowBlocks: FlowBlock[] = [
-  {
-    accent: 'var(--ethereal-secondary)',
-    description: '2.5h',
-    end: '12:30 PM',
-    id: 'deep-work',
-    label: 'Peak energy zone',
-    meta: ['Focus Mode Active', '3 Resources'],
-    participants: 2,
-    start: '10:00 AM',
-    timeLabel: '10:00 AM - 12:30 PM',
-    title: 'Deep Work: Interface Design',
-    tone: 'focus',
-  },
-  {
-    accent: 'var(--ethereal-outline-soft)',
-    end: '1:30 PM',
-    id: 'recovery',
-    meta: ['Lunch reset'],
-    start: '12:30 PM',
-    timeLabel: '12:30 PM - 1:30 PM',
-    title: 'Strategic Recovery & Lunch',
-    tone: 'recovery',
-  },
-  {
-    accent: 'var(--ethereal-primary)',
-    end: '3:00 PM',
-    id: 'architecture-review',
-    meta: ['Core sync'],
-    note: '"Ensure the API layer reflects the new design tokens."',
-    start: '2:00 PM',
-    timeLabel: '2:00 PM - 3:00 PM',
-    title: 'Sync: Architecture Review',
-    tone: 'meeting',
-  },
-];
+export const flowBlocks: FlowBlock[] = [];
 
-export const rescheduledFlowBlocks: FlowBlock[] = [
-  {
-    accent: 'var(--ethereal-primary)',
-    description: '1.5h',
-    end: '10:30 AM',
-    id: 'deep-work-rescheduled',
-    label: 'High impact',
-    meta: ['Compressed sprint', 'Peak energy protected'],
-    start: '9:00 AM',
-    timeLabel: '9:00 AM - 10:30 AM',
-    title: 'Project Deep Dive',
-    tone: 'focus',
-  },
-  {
-    accent: 'var(--ethereal-secondary)',
-    end: '11:30 AM',
-    id: 'team-sync-rescheduled',
-    meta: ['Rescheduled'],
-    start: '10:45 AM',
-    timeLabel: '10:45 AM - 11:30 AM',
-    title: 'Team Sync',
-    tone: 'meeting',
-  },
-  {
-    accent: 'var(--ethereal-mint-soft)',
-    end: '12:15 PM',
-    id: 'buffer',
-    meta: ['AI-generated buffer'],
-    start: '11:30 AM',
-    timeLabel: '11:30 AM - 12:15 PM',
-    title: 'AI Buffer: Recharge & Transition',
-    tone: 'recovery',
-  },
-];
+export const rescheduledFlowBlocks: FlowBlock[] = [];
 
-export const pendingTasks: PendingTask[] = [
-  {
-    due: 'High priority · 15m',
-    id: 'review-docs',
-    priority: 'high',
-    title: 'Review design system docs',
-  },
-  {
-    due: 'Low priority · 10m',
-    id: 'update-board',
-    priority: 'low',
-    title: 'Update sprint board',
-  },
-  {
-    due: 'Due today · Critical',
-    id: 'approve-exports',
-    priority: 'critical',
-    title: 'Approve payroll exports',
-  },
-];
+export const pendingTasks: PendingTask[] = [];
 
-export const initialTasks: TaskItem[] = [
-  {
-    addToCalendar: true,
-    createdAt: new Date().toISOString(),
-    dueAt: new Date(new Date().setHours(17, 0, 0, 0)).toISOString(),
-    id: 'brand-identity',
-    priority: 'high',
-    status: 'todo',
-    title: 'Brand Identity Workshop',
-  },
-  {
-    addToCalendar: true,
-    createdAt: new Date().toISOString(),
-    dueAt: new Date(new Date().setHours(16, 30, 0, 0)).toISOString(),
-    id: 'architecture-doc',
-    priority: 'medium',
-    status: 'todo',
-    title: 'Design System Architecture',
-  },
-];
+export const initialTasks: TaskItem[] = [];
 
-export const initialIntents: SmartIntent[] = [
-  {
-    collaborators: ['AV', 'MK', 'SR'],
-    deadline: 'Tomorrow, 5:00 PM',
-    effort: '2.5h',
-    energyWindow: '10AM - 12PM',
-    id: 'brand-identity',
-    priority: 'High Impact',
-    project: 'TaskPilot Design',
-    summary: 'Based on your past workshops, this typically requires deep preparation and follow-up docs.',
-    tags: ['#DeepWork', '#ClientFacing'],
-    title: 'Brand Identity Workshop',
-  },
-  {
-    collaborators: ['AV', 'JT'],
-    deadline: 'Today, 4:30 PM',
-    effort: '1.5h',
-    energyWindow: '11AM - 12PM',
-    id: 'architecture-doc',
-    priority: 'Strategic',
-    project: 'Neural Core',
-    summary: 'AI detected a high cognitive match for structured architecture writing before lunch.',
-    tags: ['#Documentation', '#Internal'],
-    title: 'Design System Architecture',
-  },
-];
+export const initialIntents: SmartIntent[] = [];
 
 export const baseSetup: SetupState = {
   calendarConnected: true,
