@@ -1,5 +1,6 @@
 import { CheckCircle2, Sparkles, Zap } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSanctuary } from '../context';
 import { PrimaryButton, SecondaryButton, SectionEyebrow, SurfaceCard } from '../primitives';
 
@@ -7,7 +8,23 @@ const filters = ['All Intelligence', 'Adaptive Proposals', 'Energy Insights', 'D
 
 export function InsightsFeedPage() {
   const { tasks } = useSanctuary();
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState(filters[0]);
+  const [dismissedCards, setDismissedCards] = useState<string[]>([]);
+  
+  const handleAction = (cardTitle: string, actionName: string) => {
+    if (actionName === 'Schedule Now') {
+      navigate('/focus');
+    } else if (actionName === 'Reschedule') {
+      navigate('/reschedule');
+    } else if (actionName === 'Sync Now') {
+      setDismissedCards([...dismissedCards, cardTitle]);
+    }
+  };
+
+  const dismissCard = (cardTitle: string) => {
+    setDismissedCards([...dismissedCards, cardTitle]);
+  };
 
   const cards = useMemo(() => {
     const dynamicCards = [];
@@ -93,7 +110,7 @@ export function InsightsFeedPage() {
         <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
             {cards
-              .filter((card) => activeFilter === 'All Intelligence' || card.category === activeFilter)
+              .filter((card) => !dismissedCards.includes(card.title) && (activeFilter === 'All Intelligence' || card.category === activeFilter))
               .map((card, index) => (
                 <div
                   key={card.title}
@@ -108,8 +125,8 @@ export function InsightsFeedPage() {
                   <p className="mt-3 text-base leading-8 text-[var(--ethereal-muted)]">{card.description}</p>
                   {card.action ? (
                     <div className="mt-5 flex gap-3">
-                      <PrimaryButton type="button">{card.action}</PrimaryButton>
-                      <SecondaryButton type="button">Dismiss</SecondaryButton>
+                      <PrimaryButton onClick={() => handleAction(card.title, card.action!)} type="button">{card.action}</PrimaryButton>
+                      <SecondaryButton onClick={() => dismissCard(card.title)} type="button">Dismiss</SecondaryButton>
                     </div>
                   ) : null}
                 </div>
@@ -124,7 +141,7 @@ export function InsightsFeedPage() {
                 You’ve regained 1.4 hours today through automated rescheduling and peak-state alignment.
                 Review the full breakdown of your performance metrics.
               </p>
-              <PrimaryButton className="mt-6 bg-white text-[var(--ethereal-primary)]" type="button">
+              <PrimaryButton className="mt-6 bg-white text-[var(--ethereal-primary)]" onClick={() => navigate('/intelligence/review')} type="button">
                 View Full Report
               </PrimaryButton>
             </div>
@@ -132,15 +149,15 @@ export function InsightsFeedPage() {
             <SurfaceCard className="px-5 py-5">
               <SectionEyebrow>Quick actions</SectionEyebrow>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <button className="ethereal-quick-action" type="button">
+                <button className="ethereal-quick-action" onClick={() => navigate('/focus')} type="button">
                   <Sparkles className="h-4 w-4 text-[var(--ethereal-primary)]" />
                   Activate Focus Mode
                 </button>
-                <button className="ethereal-quick-action" type="button">
+                <button className="ethereal-quick-action" onClick={() => setDismissedCards(cards.map(c => c.title))} type="button">
                   <CheckCircle2 className="h-4 w-4 text-[var(--ethereal-secondary)]" />
                   Mark All as Read
                 </button>
-                <button className="ethereal-quick-action" type="button">
+                <button className="ethereal-quick-action" onClick={() => navigate('/profile')} type="button">
                   <Zap className="h-4 w-4 text-[var(--ethereal-tertiary)]" />
                   Tune AI Sensitivity
                 </button>

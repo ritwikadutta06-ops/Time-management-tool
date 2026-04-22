@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { intensityFlow, reportMomentum } from '../data';
 import { useSanctuary } from '../context';
 import { MiniBars, PrimaryButton, SecondaryButton, SectionEyebrow, SurfaceCard } from '../primitives';
 
 export function ReviewPage() {
   const { focusScore, peakEnergyLabel, tasks } = useSanctuary();
+  const navigate = useNavigate();
   const [confirmed, setConfirmed] = useState(false);
   const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
   const completedTasks = tasks.filter((t) => t.status === 'done').length;
@@ -88,7 +90,7 @@ export function ReviewPage() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <SecondaryButton type="button">Review Plan</SecondaryButton>
+            <SecondaryButton onClick={() => navigate('/flow')} type="button">Review Plan</SecondaryButton>
             <PrimaryButton onClick={() => setConfirmed(true)} type="button">
               {confirmed ? 'Schedule Confirmed' : 'Confirm Schedule'}
             </PrimaryButton>
