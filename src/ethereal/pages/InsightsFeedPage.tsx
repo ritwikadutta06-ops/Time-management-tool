@@ -1,32 +1,62 @@
 import { CheckCircle2, Sparkles, Zap } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useSanctuary } from '../context';
 import { PrimaryButton, SecondaryButton, SectionEyebrow, SurfaceCard } from '../primitives';
 
 const filters = ['All Intelligence', 'Adaptive Proposals', 'Energy Insights', 'Daily Reports', 'System'];
 
-const cards = [
-  {
-    action: 'Apply Changes',
-    category: 'Adaptive Proposals',
-    description:
-      'I’ve noticed your cognitive load is lowest between 2:00 PM and 4:00 PM today. Should I reschedule your “Strategic Planning” session to this window?',
-    title: 'Deep Work Optimization',
-  },
-  {
-    category: 'Energy Insights',
-    description:
-      'Your biometric data indicates high cortisol and focus levels. This is the optimal time for creative problem-solving.',
-    title: 'Peak Energy Alert',
-  },
-  {
-    category: 'System',
-    description: 'All 14 connected devices are now synchronized with your TaskPilot Neural Core.',
-    title: 'Cloud Sync Complete',
-  },
-];
-
 export function InsightsFeedPage() {
+  const { tasks } = useSanctuary();
   const [activeFilter, setActiveFilter] = useState(filters[0]);
+
+  const cards = useMemo(() => {
+    const dynamicCards = [];
+    
+    const highPriorityTasks = tasks.filter(t => t.priority === 'high' && t.status !== 'done');
+    if (highPriorityTasks.length > 0) {
+      dynamicCards.push({
+        action: 'Schedule Now',
+        category: 'Adaptive Proposals',
+        title: 'Deep Work Optimization',
+        description: `You have ${highPriorityTasks.length} high priority task(s) including "${highPriorityTasks[0].title}". I've noticed your cognitive load is lowest between 2:00 PM and 4:00 PM today. Should I reserve this window?`,
+      });
+    }
+
+    const missedTasks = tasks.filter(t => t.dueAt && new Date(t.dueAt).getTime() < Date.now() && t.status !== 'done');
+    if (missedTasks.length > 0) {
+      dynamicCards.push({
+        action: 'Reschedule',
+        category: 'System',
+        title: 'Schedule Drift Detected',
+        description: `There are ${missedTasks.length} task(s) that missed their original deadline. Do you want me to automatically shift these into tomorrow's low-friction schedule?`,
+      });
+    }
+
+    const doneTasks = tasks.filter(t => t.status === 'done');
+    if (doneTasks.length >= 1) {
+      dynamicCards.push({
+        category: 'Energy Insights',
+        title: 'Flow State Validated',
+        description: `You've proven strong momentum by completing ${doneTasks.length} task(s). Advancing to complex, creative problem-solving will yield the highest return right now.`,
+      });
+    }
+
+    if (dynamicCards.length === 0) {
+       dynamicCards.push({
+         action: 'Sync Now',
+         category: 'System',
+         title: 'All Systems Nominal',
+         description: 'All 14 data sources and connected calendars are optimally synced to your TaskPilot Neural Core. Task load is exceptionally balanced.',
+       });
+       dynamicCards.push({
+         category: 'Energy Insights',
+         title: 'Baseline Readiness',
+         description: 'Historical bio-markers over the last 30 days show consistent, strong baseline readiness at this hour.',
+       });
+    }
+    
+    return dynamicCards;
+  }, [tasks]);
 
   return (
     <div className="space-y-4">

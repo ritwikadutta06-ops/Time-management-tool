@@ -38,7 +38,17 @@ export function deriveIntentSuggestion(title: string, peakWindow: string) {
     };
   }
 
-  if (/review|sync|standup|meeting/i.test(trimmed)) {
+  if (/bug|fix|issue|error|crash/i.test(trimmed)) {
+    return {
+      energyWindow: 'Immediate',
+      effort: '0.5h',
+      priority: 'Urgent',
+      project: 'Targeted Maintenance',
+      summary: 'Maintenance and debugging often require immediate focus but shorter bursts. Tackle this early to unblock momentum.',
+    };
+  }
+
+  if (/review|sync|standup|meeting|call|discuss/i.test(trimmed)) {
     return {
       energyWindow: '2PM - 4PM',
       effort: '1.0h',
@@ -49,7 +59,7 @@ export function deriveIntentSuggestion(title: string, peakWindow: string) {
     };
   }
 
-  if (/doc|write|architecture|system|design/i.test(trimmed)) {
+  if (/doc|write|architecture|system|design|plan|strategy|learn/i.test(trimmed)) {
     return {
       energyWindow: peakWindow,
       effort: '2.5h',
@@ -60,12 +70,25 @@ export function deriveIntentSuggestion(title: string, peakWindow: string) {
     };
   }
 
+  if (/email|reply|slack|message|admin|invoice|pay/i.test(trimmed)) {
+    return {
+      energyWindow: '4PM - 5PM',
+      effort: '30m',
+      priority: 'Low Friction',
+      project: 'Admin & Comms',
+      summary: 'Communication and admin work should be batched at the end of your day to avoid disrupting flow state.',
+    };
+  }
+
+  const wordCount = trimmed.split(' ').length;
+  const effort = wordCount > 5 ? '2.0h' : '1.0h';
+
   return {
     energyWindow: peakWindow,
-    effort: '1.5h',
+    effort,
     priority: 'Focused',
     project: 'Adaptive Execution',
     summary:
-      'TaskPilot recommends anchoring this task inside a single calm block with minimal context switching.',
+      `TaskPilot analyzed your input and recommends anchoring this inside a ${effort} calm block with minimal context switching.`,
   };
 }

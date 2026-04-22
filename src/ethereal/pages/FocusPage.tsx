@@ -16,16 +16,23 @@ export function FocusPage() {
   const [running, setRunning] = useState(false);
 
   useEffect(() => {
-    if (!running || secondsRemaining === 0) {
+    if (!running || secondsRemaining <= 0) {
       return undefined;
     }
 
     const interval = window.setInterval(() => {
-      setSecondsRemaining((current) => Math.max(0, current - 1));
+      setSecondsRemaining((current) => {
+        if (current <= 1) {
+          window.clearInterval(interval);
+          setRunning(false);
+          return 0;
+        }
+        return current - 1;
+      });
     }, 1000);
 
     return () => window.clearInterval(interval);
-  }, [running, secondsRemaining]);
+  }, [running]);
 
   const progress = useMemo(() => ((25 * 60 - secondsRemaining) / (25 * 60)) * 360, [secondsRemaining]);
   const activeIntent = intents[1] ?? intents[0];
