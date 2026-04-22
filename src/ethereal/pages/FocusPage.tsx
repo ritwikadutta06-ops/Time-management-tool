@@ -11,12 +11,12 @@ function formatTimer(totalSeconds: number) {
 }
 
 export function FocusPage() {
-  const { intents } = useSanctuary();
+  const { intents, tasks, activeFlow } = useSanctuary();
   const [secondsRemaining, setSecondsRemaining] = useState(24 * 60 + 18);
   const [running, setRunning] = useState(false);
 
   useEffect(() => {
-    if (!running || secondsRemaining <= 0) {
+    if (!running) {
       return undefined;
     }
 
@@ -35,7 +35,9 @@ export function FocusPage() {
   }, [running]);
 
   const progress = useMemo(() => ((25 * 60 - secondsRemaining) / (25 * 60)) * 360, [secondsRemaining]);
-  const activeIntent = intents[1] ?? intents[0];
+  const activeIntent = intents[0];
+  const pendingTasks = tasks.filter((t) => t.status === 'todo' && t.id !== activeIntent?.id);
+  const upcomingMeeting = activeFlow.find((f) => f.tone === 'meeting');
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1fr_320px]">
@@ -89,20 +91,29 @@ export function FocusPage() {
             <SurfaceCard className="rounded-[2rem] bg-[rgba(58,190,249,0.12)] px-5 py-5">
               <SectionEyebrow>AI strategy</SectionEyebrow>
               <p className="mt-4 text-base leading-8 text-[var(--ethereal-ink)]">
-                Your energy levels usually dip in 40 minutes. Try to wrap the core architecture pass by 11:30 AM.
+                {activeIntent?.summary ??
+                  'Your energy levels usually dip in 40 minutes. Try to wrap the core pass by 11:30 AM.'}
               </p>
             </SurfaceCard>
 
             <SurfaceCard className="px-5 py-5">
               <SectionEyebrow>Next task</SectionEyebrow>
-              <p className="mt-4 text-2xl font-semibold text-[var(--ethereal-ink)]">React Components Prep</p>
-              <p className="mt-2 text-sm text-[var(--ethereal-muted)]">Starts in 45 minutes</p>
+              <p className="mt-4 text-2xl font-semibold text-[var(--ethereal-ink)]">
+                {pendingTasks[0]?.title ?? 'React Components Prep'}
+              </p>
+              <p className="mt-2 text-sm text-[var(--ethereal-muted)]">
+                {pendingTasks[0] ? `Priority: ${pendingTasks[0].priority}` : 'Starts in 45 minutes'}
+              </p>
             </SurfaceCard>
 
             <SurfaceCard className="px-5 py-5">
               <SectionEyebrow>Upcoming meeting</SectionEyebrow>
-              <p className="mt-4 text-2xl font-semibold text-[var(--ethereal-ink)]">Weekly Sync</p>
-              <p className="mt-2 text-sm text-[var(--ethereal-muted)]">1:00 PM · 30 mins</p>
+              <p className="mt-4 text-2xl font-semibold text-[var(--ethereal-ink)]">
+                {upcomingMeeting?.title ?? 'Weekly Sync'}
+              </p>
+              <p className="mt-2 text-sm text-[var(--ethereal-muted)]">
+                {upcomingMeeting ? upcomingMeeting.timeLabel : '1:00 PM · 30 mins'}
+              </p>
             </SurfaceCard>
 
             <div className="ethereal-city-card">
@@ -110,7 +121,7 @@ export function FocusPage() {
               <div className="absolute inset-x-0 bottom-0 h-20 bg-[radial-gradient(circle_at_bottom,rgba(58,190,249,0.3),transparent_70%)]" />
               <button
                 className="absolute bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--ethereal-primary)] text-white shadow-[0_12px_32px_rgba(25,28,29,0.12)]"
-                onClick={() => setRunning((current) => !current)}
+                onClick={() => setRunning((current) => (!current && secondsRemaining > 0))}
                 type="button"
               >
                 {running ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
@@ -118,7 +129,7 @@ export function FocusPage() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <PrimaryButton onClick={() => setRunning((current) => !current)} type="button">
+              <PrimaryButton onClick={() => setRunning((current) => (!current && secondsRemaining > 0))} type="button">
                 {running ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                 {running ? 'Pause focus' : 'Start focus'}
               </PrimaryButton>

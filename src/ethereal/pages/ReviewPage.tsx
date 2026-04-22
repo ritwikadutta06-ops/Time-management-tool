@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { intensityFlow, reportMomentum } from '../data';
+import { useSanctuary } from '../context';
 import { MiniBars, PrimaryButton, SecondaryButton, SectionEyebrow, SurfaceCard } from '../primitives';
 
 export function ReviewPage() {
+  const { focusScore, peakEnergyLabel, tasks } = useSanctuary();
   const [confirmed, setConfirmed] = useState(false);
+  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+  const completedTasks = tasks.filter((t) => t.status === 'done').length;
 
   return (
     <div className="space-y-4">
@@ -13,7 +17,7 @@ export function ReviewPage() {
           Daily Sanctuary Report
         </h1>
         <p className="mt-4 max-w-3xl text-lg leading-8 text-[var(--ethereal-muted)]">
-          Reflection on June 14. You moved with intent today. Let&apos;s look at the rhythm of your
+          Reflection on {today}. You moved with intent today, completing {completedTasks} tasks. Let&apos;s look at the rhythm of your
           productivity.
         </p>
       </SurfaceCard>
@@ -26,8 +30,8 @@ export function ReviewPage() {
               <h2 className="mt-3 text-4xl font-semibold text-[var(--ethereal-ink)]">Focus Momentum</h2>
             </div>
             <div className="text-right">
-              <p className="text-5xl font-semibold text-[var(--ethereal-primary)]">85</p>
-              <p className="text-sm font-semibold text-[var(--ethereal-secondary)]">+12% vs yesterday</p>
+              <p className="text-5xl font-semibold text-[var(--ethereal-primary)]">{focusScore.toFixed(0)}</p>
+              <p className="text-sm font-semibold text-[var(--ethereal-secondary)]">Target reached</p>
             </div>
           </div>
           <div className="mt-6">
@@ -37,12 +41,12 @@ export function ReviewPage() {
 
         <div className="grid gap-4">
           <SurfaceCard className="rounded-[2rem] bg-[rgba(58,190,249,0.16)] px-6 py-6">
-            <SectionEyebrow>Morning spark</SectionEyebrow>
+            <SectionEyebrow>Energy peaks</SectionEyebrow>
             <p className="mt-4 max-w-sm text-2xl font-semibold text-[var(--ethereal-ink)]">
-              You are 20% more productive before 11:00 AM.
+              Your optimal productivity window is {peakEnergyLabel}.
             </p>
             <p className="mt-3 text-sm leading-7 text-[var(--ethereal-muted)]">
-              Consider moving high-cognitive tasks earlier.
+              Consider moving high-cognitive tasks to this period.
             </p>
           </SurfaceCard>
 

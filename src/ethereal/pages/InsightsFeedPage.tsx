@@ -11,6 +11,7 @@ export function InsightsFeedPage() {
 
   const cards = useMemo(() => {
     const dynamicCards = [];
+    const now = new Date().getTime(); // Safe to calculate inside useMemo since it only runs on tasks change
     
     const highPriorityTasks = tasks.filter(t => t.priority === 'high' && t.status !== 'done');
     if (highPriorityTasks.length > 0) {
@@ -22,7 +23,7 @@ export function InsightsFeedPage() {
       });
     }
 
-    const missedTasks = tasks.filter(t => t.dueAt && new Date(t.dueAt).getTime() < Date.now() && t.status !== 'done');
+    const missedTasks = tasks.filter(t => t.dueAt && new Date(t.dueAt).getTime() < now && t.status !== 'done');
     if (missedTasks.length > 0) {
       dynamicCards.push({
         action: 'Reschedule',

@@ -7,6 +7,7 @@ type SyncMode = 'local' | 'supabase';
 const runtime = {
   mode: hasSupabaseEnv ? ('supabase' as SyncMode) : ('local' as SyncMode),
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const supabaseAny = supabase as any;
 
 const localKeys = {
@@ -74,6 +75,7 @@ export async function listTaskPilotTasks() {
         throw error;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return ((data ?? []) as any[]).map((row) => ({
         addToCalendar: row.add_to_calendar,
         createdAt: row.created_at,

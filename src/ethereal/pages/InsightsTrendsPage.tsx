@@ -4,7 +4,12 @@ import { useSanctuary } from '../context';
 import { MiniBars, PrimaryButton, SectionEyebrow, SurfaceCard } from '../primitives';
 
 export function InsightsTrendsPage() {
-  const { applyAdaptiveReschedule, focusScore, overloadResolved, peakEnergyLabel } = useSanctuary();
+  const { applyAdaptiveReschedule, focusScore, overloadResolved, peakEnergyLabel, tasks, intents, activeFlow } = useSanctuary();
+
+  const pendingCount = tasks.filter((t) => t.status === 'todo').length;
+  const meetingCount = activeFlow.filter((f) => f.tone === 'meeting').length;
+  const burnoutRisk = pendingCount > 8 ? 'High' : pendingCount > 4 ? 'Moderate' : 'Low';
+  const deepWorkHours = intents.reduce((acc, i) => acc + (parseFloat(i.effort) || 0), 0) || 4.5;
 
   return (
     <div className="space-y-4">
@@ -44,13 +49,19 @@ export function InsightsTrendsPage() {
               style={{ background: 'conic-gradient(var(--ethereal-secondary) 105deg, rgba(189,200,209,0.34) 0deg)' }}
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-sm font-bold text-[var(--ethereal-secondary)]">
-                Low
+                {burnoutRisk}
               </div>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-[var(--ethereal-ink)]">Healthy Balance</p>
-              <p className="mt-1 text-sm text-[var(--ethereal-muted)]">Recovery rate is optimal.</p>
-              <p className="mt-4 text-sm text-[var(--ethereal-muted)]">Primary stressor: Email overload</p>
+              <p className="text-2xl font-semibold text-[var(--ethereal-ink)]">
+                {burnoutRisk === 'High' ? 'Nearing Burnout' : burnoutRisk === 'Moderate' ? 'Manageable Load' : 'Healthy Balance'}
+              </p>
+              <p className="mt-1 text-sm text-[var(--ethereal-muted)]">
+                {burnoutRisk === 'High' ? 'Consider rescheduling non-essential tasks.' : 'Recovery rate is optimal.'}
+              </p>
+              <p className="mt-4 text-sm text-[var(--ethereal-muted)]">
+                {pendingCount > 0 ? `Primary focus: ${tasks[0]?.title}` : 'Inbox Zero achieved'}
+              </p>
             </div>
           </div>
         </SurfaceCard>
@@ -61,9 +72,9 @@ export function InsightsTrendsPage() {
           <SectionEyebrow>Efficiency patterns</SectionEyebrow>
           <div className="mt-4 space-y-4">
             {[
-              ['Deep Work', '4.5h/day'],
-              ['Collaboration', '2.2h/day'],
-              ['Admin/Bio-breaks', '1.3h/day'],
+              ['Deep Work', `${deepWorkHours.toFixed(1)}h logged`],
+              ['Pending Tasks', `${pendingCount} items`],
+              ['Scheduled Flow', `${activeFlow.length} blocks`],
             ].map(([label, value]) => (
               <div key={label} className="flex items-center justify-between rounded-[1.25rem] bg-[var(--ethereal-surface-soft)] px-4 py-4">
                 <span className="font-medium text-[var(--ethereal-ink)]">{label}</span>
@@ -74,10 +85,13 @@ export function InsightsTrendsPage() {
 
           <div className="mt-5 rounded-[1.5rem] bg-[var(--ethereal-surface-soft)] px-4 py-5 text-center">
             <SectionEyebrow>Meeting load</SectionEyebrow>
-            <p className="mt-3 text-5xl font-semibold text-[var(--ethereal-ink)]">12.4</p>
-            <p className="mt-2 text-sm text-[var(--ethereal-muted)]">Hours per week</p>
+            <p className="mt-3 text-5xl font-semibold text-[var(--ethereal-ink)]">{Math.max(1, meetingCount * 1.5).toFixed(1)}</p>
+            <p className="mt-2 text-sm text-[var(--ethereal-muted)]">Hours upcoming</p>
             <div className="mt-4 h-2 rounded-full bg-white">
-              <div className="h-2 w-[58%] rounded-full bg-[var(--ethereal-primary)]" />
+              <div
+                className="h-2 w-[58%] rounded-full bg-[var(--ethereal-primary)]"
+                style={{ width: `${Math.min(100, meetingCount * 20)}%` }}
+              />
             </div>
           </div>
         </SurfaceCard>
@@ -85,11 +99,13 @@ export function InsightsTrendsPage() {
         <SurfaceCard className="ethereal-cta-panel px-6 py-6">
           <SectionEyebrow>Inefficiency alert</SectionEyebrow>
           <h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-tight text-white">
-            Back-to-back meetings are reducing your deep work by 30%
+            {pendingCount > 4
+              ? 'Task overload is reducing your deep work capacity by 30%'
+              : 'Back-to-back blocks are reducing your deep work focus'}
           </h2>
           <p className="mt-4 max-w-xl text-base leading-8 text-white/78">
-            TaskPilot suggests blocking 15 minutes of &quot;Buffer Time&quot; between your Tuesday afternoon
-            syncs to prevent cognitive fatigue.
+            TaskPilot suggests blocking 15 minutes of &quot;Buffer Time&quot; between your upcoming tasks
+            to prevent cognitive fatigue.
           </p>
           <PrimaryButton
             className="mt-8 bg-white text-[var(--ethereal-primary)]"
